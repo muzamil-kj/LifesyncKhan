@@ -9,6 +9,7 @@ import Services from './components/Services';
 import Footer from './components/Footer';
 import Signup from './components/Signup';
 import Login from './components/Login';
+import ContactForm from "./components/ContactForm";
 import Dashboard from './components/Dashboard';
 import Chatbot from './components/AIChatbot/Chatbot';
 import LifesyncChatbot from './components/AIChatbot/chatbotLifesync';
@@ -97,6 +98,7 @@ function MainApp() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/faqs" element={<FAQs />} />
+        <Route path="/contact" element={<ContactForm />} />
         <Route path="/dashboard/*" element={<Dashboard />}>
           <Route path="profile" element={<Profile />} />
           <Route path="wellness" element={<Wellness />} />

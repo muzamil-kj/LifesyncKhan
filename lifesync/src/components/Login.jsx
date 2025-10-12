@@ -31,33 +31,30 @@ const Login = () => {
   const navigate = useNavigate();
 
   // ✅ Automatically redirect if already logged in and session is valid
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      const lastLoginTime = localStorage.getItem("lastLoginTime");
+      const now = Date.now();
 
-useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, async (user) => {
-    const lastLoginTime = localStorage.getItem("lastLoginTime");
-    const now = Date.now();
+      if (user && lastLoginTime && now - parseInt(lastLoginTime) < 24 * 60 * 60 * 1000) {
+        const autoLoginLogged = localStorage.getItem("autoLoginLogged");
+        if (!autoLoginLogged) {
+          const idToken = await user.getIdToken();
+          const formattedTime = new Date().toLocaleString("en-GB");
+          const message = `Action: You Logged In To Lifesync\n\nTime: ${formattedTime}`;
 
-    if (user && lastLoginTime && now - parseInt(lastLoginTime) < 24 * 60 * 60 * 1000) {
-      const autoLoginLogged = localStorage.getItem("autoLoginLogged");
-      if (!autoLoginLogged) {
-        const idToken = await user.getIdToken();
-        const formattedTime = new Date().toLocaleString("en-GB");
-        const message = `Action: You Logged In To Lifesync\n\nTime: ${formattedTime}`;
+          // ✅ Use LogService here
+          await LogService.sendLog(message, idToken);
 
-        // ✅ Use LogService here
-        await LogService.sendLog(message, idToken);
+          localStorage.setItem("autoLoginLogged", "true");
+        }
 
-        localStorage.setItem("autoLoginLogged", "true");
+        navigate("/dashboard");
       }
+    });
 
-      navigate("/dashboard");
-    }
-  });
-
-  return () => unsubscribe();
-}, []);
-
-
+    return () => unsubscribe();
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -160,7 +157,14 @@ useEffect(() => {
                 </button>
               </div>
             </div>
-            <button type="submit" className="auth-btn">Login</button>
+            <div style={{ display: "flex", gap: "10px", alignItems: "center", marginTop: "10px" }}>
+              <button type="submit" className="auth-btn">Login</button>
+
+              {/* Contact Us button — uses same .auth-btn class so it inherits styling */}
+              <Link to="/contact" className="auth-btn" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                Contact Us
+              </Link>
+            </div>
           </form>
         ) : (
           <div>
@@ -174,12 +178,19 @@ useEffect(() => {
                 required
               />
             </div>
-            <button
-              onClick={handlePasswordReset}
-              className="auth-btn"
-            >
-              Reset Password
-            </button>
+            <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+              <button
+                onClick={handlePasswordReset}
+                className="auth-btn"
+              >
+                Reset Password
+              </button>
+
+              {/* Contact button also visible on forgot-password screen */}
+              <Link to="/contact" className="auth-btn" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                Contact Us
+              </Link>
+            </div>
           </div>
         )}
 
