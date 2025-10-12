@@ -4,20 +4,29 @@ import "./styles.css";
 
 const Feedback = () => {
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [dob, setDob] = useState("");
+  const [subject, setSubject] = useState("");
   const [feedback, setFeedback] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name || !feedback) return;
+    if (!name || !email || !dob || !subject || !feedback) return;
 
     try {
       await axios.post("http://localhost:5007/submit-feedback", {
         name,
+        email,
+        dob,
+        subject,
         feedback,
       });
-      setSuccessMsg("Thank you for your feedback!");
+      setSuccessMsg("Thank you for your valuable feedback!");
       setName("");
+      setEmail("");
+      setDob("");
+      setSubject("");
       setFeedback("");
       setTimeout(() => setSuccessMsg(""), 4000);
     } catch (error) {
@@ -35,6 +44,27 @@ const Feedback = () => {
           className="feedback-input"
           value={name}
           onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="email"
+          placeholder="Your Email"
+          className="feedback-input"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="date"
+          placeholder="Date of Birth"
+          className="feedback-input"
+          value={dob}
+          onChange={(e) => setDob(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Subject"
+          className="feedback-input"
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
         />
         <textarea
           placeholder="Your Feedback"
