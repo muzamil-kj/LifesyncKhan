@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../App.css"; // keep using same global CSS
+import "./styles.css"; // keep using same global CSS
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
