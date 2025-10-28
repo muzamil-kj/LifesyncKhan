@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        // Add your Vercel token as a Jenkins credential (type: Secret Text)
+        VERCEL_TOKEN = credentials('vercel-token')
+    }
+
     stages {
         stage('Clone Repository') {
             steps {
@@ -30,19 +35,23 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy to Vercel') {
             steps {
-                echo 'Deploying project (example step)...'
+                echo '🚀 Deploying to Vercel...'
+                bat '''
+                npm install -g vercel
+                vercel --token %VERCEL_TOKEN% --prod --yes
+                '''
             }
         }
     }
 
     post {
         success {
-            echo '✅ Build completed successfully!'
+            echo '✅ Build & Deployment successful!'
         }
         failure {
-            echo '❌ Build failed. Please check logs.'
+            echo '❌ Build failed. Please check Jenkins logs.'
         }
     }
 }
