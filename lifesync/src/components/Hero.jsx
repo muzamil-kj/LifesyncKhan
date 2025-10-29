@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebaseConfig";
 import "./styles.css";
@@ -88,11 +88,10 @@ const Hero = () => {
 
         <div className="hero-content">
           <h1 className="hero-heading">
-            Healing <span className="highlight">Muzammil</span>
+            Healing <span className="highlight">DevOps Assignment # 2</span>
           </h1>
           <p className="hero-subheading">
-            LifeSync believes in the power of inner healing. Our holistic approach combines 
-            AI technology with psychological insights to create lasting positive change.
+            Muzammil, Nasir and Moeid
           </p>
           <h3 className="fed-head">What <span className="mn-head">People Say!</span></h3>
 
